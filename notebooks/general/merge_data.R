@@ -13,6 +13,12 @@ getwd()
 source("config.R")
 setwd(script_dir)
 
+# Create the output directory if it does not exist
+if (!file.exists(output_dir)) {
+  message(paste0(output_dir, ' does not exist. Creating it now.'))
+  dir.create(output_dir)
+}
+
 # Filter txt files
 file_list = Sys.glob(paths = c(paste(data_dir,"/*.txt",sep="")))
 default_list = "abcd_lt01|abcd_lpds01|pdem02|abcd_cbcl01|abcd_cbcls01|abcd_devhxss01"
