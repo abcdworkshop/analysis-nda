@@ -3,8 +3,12 @@
 # Define paths and variables
 # data_dir = path to directory containing the curated data
 # script_dir = path to scripts directory
-# filter_list = regular expression to filter text file list
+# output_dir = path to directory to write output data files
+# filter_list = regular expression to filter text file list with
 
-data_dir = "~/Desktop/data/"
-script_dir = "~/Documents/code/analysis-nda/notebooks/general/"
+# OBS! Make sure not to place/write the data to your repository
+
+data_dir = "~/Desktop/data"
+script_dir = "~/Documents/code/analysis-nda/notebooks/general"
+output_dir = "~/Desktop/data_out"
 filter_list = "nback"

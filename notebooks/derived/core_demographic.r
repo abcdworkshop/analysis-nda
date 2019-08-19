@@ -15,7 +15,7 @@
 
 # Start by reading in the merged data from disk.
 
-nda18 = readRDS("nda18.Rds")
+nda18 = readRDS(file.path(output_dir, "nda18.Rds"))
 
 
 # Now extend nda18 by the new columns.
@@ -268,5 +268,5 @@ nda18=merge(nda18,bl.demo,by=c("subjectid"))
 
 # Save the new data frame again.
 
-saveRDS(nda18, "nda18.Rds")
+saveRDS(nda18, file.path(output_dir, "nda18.Rds"))
 

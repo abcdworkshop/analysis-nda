@@ -14,7 +14,7 @@ source("config.R")
 setwd(script_dir)
 
 # Filter txt files
-file_list = Sys.glob(paths = c(paste(data_dir,"*.txt",sep="")))
+file_list = Sys.glob(paths = c(paste(data_dir,"/*.txt",sep="")))
 default_list = "abcd_lt01|abcd_lpds01|pdem02|abcd_cbcl01|abcd_cbcls01|abcd_devhxss01"
 filter = sprintf("%s|%s", filter_list, default_list)
 input_list = file_list[grepl(filter, file_list)]
@@ -200,17 +200,16 @@ nda18$eventname = factor(nda18$eventname, levels(nda18$eventname)[c(2,4,1,3)])
 
 # The nda18 data frame should contain 27,368 rows (baseline: 11,875; 6 month: 8,623; 1 year: 4,951; and 18 month: 1,919) and about 65,800 columns. As a last step we can save the data in R's native file format (4.4GB).
 
-saveRDS(nda18, "nda18.Rds")
+saveRDS(nda18, file.path(output_dir, "nda18.Rds"))
 names.nda18=colnames(nda18)
 save(file="names.nda18.RData",names.nda18)
 
 # Optional -- save as .csv file as well
 
-write.csv(nda18, "nda18.csv", row.names = FALSE)
+write.csv(nda18, file.path(output_dir, "nda18.Rds"), row.names = FALSE)
 
 # In order to read the data back into memory use:
-
-# nda18 = readRDS("nda18.Rds")
+# nda18 = readRDS(file.path(output_dir, "nda18.Rds"))
 
 
 # The next step in processing the data is adding the core demographics [core_demographcs](notebooks/derived/core_demographic.md).

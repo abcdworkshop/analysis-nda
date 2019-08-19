@@ -5,7 +5,7 @@
 # Read in the merged data (see [merge_data](notebooks/general/merge_data.md)) and a table that contains the factors for each categorical variable. The second table is stored in a csv file that is part of this repository and has been generated from the original REDCap data dictionaries.
 
 
-nda18 = readRDS("nda18.Rds")
+nda18 = readRDS(file.path(output_dir, "nda18.Rds"))
 categories = read.csv('choices_coding_nda18.csv')
 
 
@@ -86,7 +86,7 @@ nda18 = data_clean
 
 # We can save this new version of the ABCD data combined spreadsheet now:
 
-saveRDS(nda18, "nda18.Rds")
+saveRDS(nda18, file.path(output_dir, "nda18.Rds"))
 
 
 # Looking at the factor levels you will find that some of them are more difficult to read than others. Some contain HTML instructions for two language versions (English and Spanish) for each level. For dropdown entries the language encoding cannot use HTML, instead the following pattern is used: '##en##English##/en## ##es##Spanish##/es##'.
