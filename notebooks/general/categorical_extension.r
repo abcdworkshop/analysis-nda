@@ -86,7 +86,7 @@ nda18 = data_clean
 
 # We can save this new version of the ABCD data combined spreadsheet now:
 
-saveRDS(nda18, "nda18.Rds", compress = FALSE)
+saveRDS(nda18, "nda18.Rds")
 
 
 # Looking at the factor levels you will find that some of them are more difficult to read than others. Some contain HTML instructions for two language versions (English and Spanish) for each level. For dropdown entries the language encoding cannot use HTML, instead the following pattern is used: '##en##English##/en## ##es##Spanish##/es##'.

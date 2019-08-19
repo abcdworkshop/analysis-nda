@@ -7,9 +7,17 @@
 # We will assume that you downloaded the spreadsheet data (7.7GB) from the [NIMH data archive](https://data-archive.nimh.nih.gov/abcd/query/abcd-interim-annual-release-2.0.html) and placed them in the directory "data" of the root folder of this project. Specify the path and read in a list of all the text files provided.
 
 rm(list=ls())
-script.dir <- getwd()
-setwd(script.dir)
-input_list = Sys.glob(paths = c(paste(script.dir,"/../../data/*.txt",sep="")))
+
+# Source config file and set working directory
+getwd()
+source("config.R")
+setwd(script_dir)
+
+# Filter txt files
+file_list = Sys.glob(paths = c(paste(data_dir,"*.txt",sep="")))
+default_list = "abcd_lt01|abcd_lpds01|pdem02|abcd_cbcl01|abcd_cbcls01|abcd_devhxss01"
+filter = sprintf("%s|%s", filter_list, default_list)
+input_list = file_list[grepl(filter, file_list)]
 
 # Set up cluster for parallel computing using parSapply() instead of sapply()
 # It is currently set to use one less core than available. Change if desired.
@@ -18,7 +26,7 @@ if (!require(parallel)) {
 }
 
 numCores <- parallel::detectCores()
-cl <- makeCluster(numCores - 1)
+cl <- parallel::makeCluster(numCores - 1)
 
 # Remove all files that are not required for this merge. This includes files that are related to the download process as well as files that reference the raw data sharing (Fast-Track).
 
@@ -40,7 +48,6 @@ for(p in 1:length(input_list)){
 alia = read.csv('NDA_DEAP_names_2.0.csv')
 tables = list()
 
-system.time(
 for (p in 1:length(input_list)) {
   print(p)
   input = input_list[p]
@@ -59,7 +66,7 @@ for (p in 1:length(input_list)) {
 
   # replace variable names from nda with their alias names to make them more like ABCD
   instrument=instrument.name[p]
-  ali  = alia[which(alia$instrument == instrument),]
+  ali = alia[which(alia$instrument == instrument),]
   nn = names(dt)
   for (q in 1:length(nn)) {
     if (nn[q] %in% ali$nda) {
@@ -68,10 +75,9 @@ for (p in 1:length(input_list)) {
   }
   tables[[p]] = dt
 }
-)
 
 # Stop custer
-stopCluster(cl)
+parallel::stopCluster(cl)
 
 # The first row in each spreadsheet is the element description. Lets remove those for our data tables. This information is already present in the [ABCD Data Dictionaries](https://ndar.nih.gov/data_dictionary.html?source=ABCD%2BRelease%2B2.0&submission=ALL).
 
@@ -194,7 +200,7 @@ nda18$eventname = factor(nda18$eventname, levels(nda18$eventname)[c(2,4,1,3)])
 
 # The nda18 data frame should contain 27,368 rows (baseline: 11,875; 6 month: 8,623; 1 year: 4,951; and 18 month: 1,919) and about 65,800 columns. As a last step we can save the data in R's native file format (4.4GB).
 
-saveRDS(nda18, "nda18_orig.Rds",compress = FALSE)
+saveRDS(nda18, "nda18.Rds")
 names.nda18=colnames(nda18)
 save(file="names.nda18.RData",names.nda18)
 
@@ -204,7 +210,7 @@ write.csv(nda18, "nda18.csv", row.names = FALSE)
 
 # In order to read the data back into memory use:
 
-# nda18 = readRDS("nda18_orig.Rds")
+# nda18 = readRDS("nda18.Rds")
 
 
 # The next step in processing the data is adding the core demographics [core_demographcs](notebooks/derived/core_demographic.md).

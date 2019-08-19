@@ -15,7 +15,7 @@
 
 # Start by reading in the merged data from disk.
 
-nda18 = readRDS("nda18_orig.Rds")
+nda18 = readRDS("nda18.Rds")
 
 
 # Now extend nda18 by the new columns.
@@ -34,13 +34,13 @@ nda18$subjectid = nda18$src_subject_id
 
 
 ### Age (in month)
-Get a better name for interview_age.
+# Get a better name for interview_age.
 
 nda18$age = nda18$interview_age
 
 
 ### Sex
-On NDA the "gender" variable is listed as containing "Sex at birth". Lets create a copy called "sex" and reset empty to NA.
+# On NDA the "gender" variable is listed as containing "Sex at birth". Lets create a copy called "sex" and reset empty to NA.
 
 nda18$sex = nda18$gender
 nda18$sex[which(nda18$sex=="")]=NA
@@ -268,5 +268,5 @@ nda18=merge(nda18,bl.demo,by=c("subjectid"))
 
 # Save the new data frame again.
 
-saveRDS(nda18, "nda18.Rds", compress = FALSE)
+saveRDS(nda18, "nda18.Rds")
 
