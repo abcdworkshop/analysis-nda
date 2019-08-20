@@ -15,6 +15,7 @@
 
 # Start by reading in the merged data from disk.
 
+source("config.R")
 nda18 = readRDS(file.path(output_dir, "nda18.Rds"))
 
 

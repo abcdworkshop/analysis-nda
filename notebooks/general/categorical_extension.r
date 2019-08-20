@@ -4,7 +4,7 @@
 
 # Read in the merged data (see [merge_data](notebooks/general/merge_data.md)) and a table that contains the factors for each categorical variable. The second table is stored in a csv file that is part of this repository and has been generated from the original REDCap data dictionaries.
 
-
+source("config.R")
 nda18 = readRDS(file.path(output_dir, "nda18.Rds"))
 categories = read.csv('choices_coding_nda18.csv')
 
